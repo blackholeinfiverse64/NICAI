@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+/** Samachar API (local or your team’s server) */
+const SAMACHAR_API_BASE = "http://localhost:8000";
+/** Mitra API — deployed backend */
+const MITRA_API_BASE = "https://ai-assistant-backend-8hur.onrender.com";
+
 const MARITIME_SCENARIO =
   "Multiple reports indicate a vessel operating in restricted waters near a coastal zone. Movement pattern suggests loitering behavior with intermittent communication signals. No authorized activity recorded for this region.";
 
@@ -157,7 +162,7 @@ export default function App() {
     setCurrentStep(STEPS.SAMACHAR);
     let samacharData;
     try {
-      const res = await fetch("http://localhost:8000/api/samachar/process", {
+      const res = await fetch(`${SAMACHAR_API_BASE}/api/samachar/process`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: input }),
@@ -174,7 +179,7 @@ export default function App() {
 
     setCurrentStep(STEPS.MITRA);
     try {
-      const res = await fetch("http://localhost:8000/api/mitra/evaluate", {
+      const res = await fetch(`${MITRA_API_BASE}/api/mitra/evaluate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ event: samacharData }),
